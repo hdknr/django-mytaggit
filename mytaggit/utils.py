@@ -6,11 +6,15 @@ __all__ = ['Kakasi']
 class Kakasi:
     _instance = None
 
-    def __init__(self):
+    def __init__(self, **kwargs):
+        opts = {
+            'H': 'a', 'K': 'a', 'J': 'a',
+            'S': '-', 's': True}
+        opts.update(kwargs)
+
         self.kakasi = kakasi()
-        self.kakasi.setMode('H', 'a')
-        self.kakasi.setMode('K', 'a')
-        self.kakasi.setMode('J', 'a')
+        for k, v in opts.items():
+            self.kakasi.setMode(k, v)
         self.converter = self.kakasi.getConverter()
 
     def convert(self, text):
