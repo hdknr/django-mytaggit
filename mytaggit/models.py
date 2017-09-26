@@ -1,6 +1,7 @@
 # coding: utf-8
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.template.defaultfilters import slugify as default_slugify
 from taggit.models import TagBase, GenericTaggedItemBase
 from taggit.managers import TaggableManager as BaseTaggableManager
 from . import methods
@@ -14,7 +15,10 @@ class Tag(TagBase, methods.Tag):
 
     def slugify(self, tag, i=None):
         tag = self.to_roman(tag)
-        return super(Tag, self).slugify(tag, i=i)
+        slug = default_slugify(tag)
+        if i is not None:
+            slug += "-%d" % i
+        return slug
 
 
 class TaggedItem(GenericTaggedItemBase):
