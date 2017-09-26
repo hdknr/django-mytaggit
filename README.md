@@ -1,0 +1,3 @@
+# django-mytaggit
+
+- customized tagging
