@@ -1,5 +1,6 @@
 # coding: utf-8
 from pykakasi import kakasi
+import re
 __all__ = ['Kakasi']
 
 
@@ -18,7 +19,8 @@ class Kakasi:
         self.converter = self.kakasi.getConverter()
 
     def convert(self, text):
-        return self.converter.do(text)
+        res = self.converter.do(text)
+        return re.sub(r'--+', '-', re.sub(r'\s+', '-', res))
 
     def __new__(cls):
         if cls._instance is None:
