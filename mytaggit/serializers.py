@@ -40,6 +40,9 @@ class TagSerializer(serializers.ModelSerializer):
         else:
             return super(TagSerializer, self).save(**kwargs)
 
+    def get_or_create(self, data):
+        return self.Meta.model.objects.get_or_create(name=data['name'])[0]
+
 
 class ContentTypeField(serializers.Field):
     SPLITER = '_'
