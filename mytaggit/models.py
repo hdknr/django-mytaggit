@@ -3,6 +3,7 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify as default_slugify
 from django.core.urlresolvers import reverse
+from django.utils.functional import cached_property
 from taggit.models import TagBase, GenericTaggedItemBase
 from taggit.managers import TaggableManager as BaseTaggableManager
 from . import methods
@@ -24,6 +25,10 @@ class Tag(TagBase, methods.Tag):
     def get_absolute_url(self):
         name = getattr(settings, 'MYTAGGIT_URL', None)
         return name and reverse(name, kwargs={'slug': self.slug}) or ''
+
+    @cached_property
+    def is_active(self):
+        return self.slug and self.name and self.mytaggit_taggeditem_items.count() > 0
 
 
 class TaggedItem(GenericTaggedItemBase):
