@@ -5,6 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from rest_framework import serializers
 from . import models
+import json
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -41,7 +42,25 @@ class TagSerializer(serializers.ModelSerializer):
             return super(TagSerializer, self).save(**kwargs)
 
     def get_or_create(self, data):
+        if isinstance(data, str):
+            return self.Meta.model.objects.get_or_create(name=data)[0]
         return self.Meta.model.objects.get_or_create(name=data['name'])[0]
+
+
+class TagManagerSerializerField(serializers.ListField):
+    child = TagSerializer()
+
+    def to_internal_value(self, data):
+        request = ('request' in self.context) and self.context['request']
+        if request and request.POST:
+            data = json.loads(data[0])
+        res = [self.child.get_or_create(item) for item in data]
+        return res
+
+    def to_representation(self, data):
+        if isinstance(data, list):
+            return super(TagManagerSerializerField, self).to_representation(data)
+        return super(TagManagerSerializerField, self).to_representation(data.all())
 
 
 class ContentTypeField(serializers.Field):
