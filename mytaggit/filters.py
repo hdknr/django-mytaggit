@@ -7,6 +7,8 @@ from . import models
 class TagFilter(filters.FilterSet):
     keyword = filters.CharFilter(
         label=_('Keyword'), name='keyword', method='filter_keyword')
+    name = filters.CharFilter(lookup_expr='icontains')
+
     is_active = filters.BooleanFilter(
         label=_('Is Active'), name='is_active', method='filter_is_actvie')
 
@@ -24,7 +26,8 @@ class TagFilter(filters.FilterSet):
         return queryset
 
     def filter_keyword(self, queryset, name, value):
-        q = Q(slug='') | Q(name='') | Q(mytaggit_taggeditem_items__isnull=True)
+        print("filter_keyword", name, value)
+        # q = Q(slug='') | Q(name='') | Q(mytaggit_taggeditem_items__isnull=True)
         return value and queryset.filter(
             Q(name__icontains=value) | Q(slug__icontains=value)) or queryset
 
