@@ -9,6 +9,7 @@
 *~
 .*~
 *.swp
+*.sqllite3
 
 # python
 *.egg-info
@@ -27,3 +28,4 @@ app/local_settings.py
 
 # mac
 .DS_Store
+
