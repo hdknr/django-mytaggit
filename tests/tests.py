@@ -28,7 +28,7 @@ class FoodTestCase(UnitTestCase):
             for i in range(3)]
         tags = ['野菜', '美味しい']
         food = Food.objects.create()
-        food.tags.add_users(tags, users=[users])
+        food.tags.add_users(tags, users=users)
         #
         self.assertTrue(
             Tag.objects.filter(
