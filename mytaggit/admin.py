@@ -4,8 +4,10 @@ from django.contrib import admin
 from .models import Tag, TaggedItem
 
 
-class TaggedItemInline(admin.StackedInline):
+class TaggedItemInline(admin.TabularInline):
     model = TaggedItem
+    raw_id_fields = ['users', 'content_type']
+    extra = 1
 
 
 @admin.register(Tag)
