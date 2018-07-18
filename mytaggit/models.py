@@ -74,7 +74,7 @@ class _TaggableManager(_BaseTaggableManager):
                 tag=tag, **self._lookup_kwargs())
 
             if users and hasattr(taggeditem, 'users'):
-                taggeditem.users.set(*users)
+                taggeditem.users.add(*users)
 
         signals.m2m_changed.send(
             sender=self.through, action="post_add",
