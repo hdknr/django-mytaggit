@@ -1,11 +1,18 @@
-from django.db import models
+from django.db import models, router
+from django.db.models import signals
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify as default_slugify
 from django.urls import reverse
+from django.contrib.auth.models import User
 from django.utils.functional import cached_property
+
 from taggit.models import TagBase, GenericTaggedItemBase
-from taggit.managers import TaggableManager as BaseTaggableManager
+from taggit.managers import (
+    _TaggableManager as _BaseTaggableManager,
+    TaggableManager as BaseTaggableManager,
+)
+from taggit.utils import require_instance_manager
 from . import methods
 
 
@@ -36,7 +43,44 @@ class TaggedItem(GenericTaggedItemBase):
     tag = models.ForeignKey(
         Tag, related_name="%(app_label)s_%(class)s_items", 
         on_delete=models.CASCADE)
+    users = models.ManyToManyField(
+        User, blank=True)
 
+
+class _TaggableManager(_BaseTaggableManager):
+    @require_instance_manager
+    def add_users(self, tags, users=[]):
+        db = router.db_for_write(self.through, instance=self.instance)
+
+        tag_objs = self._to_tag_model_instances(tags)
+        new_ids = {t.pk for t in tag_objs}
+
+        # NOTE: can we hardcode 'tag_id' here or should the column name be got
+        # dynamically from somewhere?
+        vals = (self.through._default_manager.using(db)
+                .values_list('tag_id', flat=True)
+                .filter(**self._lookup_kwargs()))
+
+        new_ids = new_ids - set(vals)
+
+        signals.m2m_changed.send(
+            sender=self.through, action="pre_add",
+            instance=self.instance, reverse=False,
+            model=self.through.tag_model(), pk_set=new_ids, using=db,
+        )
+
+        for tag in tag_objs:
+            taggeditem, created = self.through._default_manager.using(db).get_or_create(
+                tag=tag, **self._lookup_kwargs())
+
+            if users and hasattr(taggeditem, 'users'):
+                taggeditem.users.set(*users)
+
+        signals.m2m_changed.send(
+            sender=self.through, action="post_add",
+            instance=self.instance, reverse=False,
+            model=self.through.tag_model(), pk_set=new_ids, using=db,
+        )
 
 class TaggableManager(BaseTaggableManager):
 
@@ -44,6 +88,7 @@ class TaggableManager(BaseTaggableManager):
                  help_text=_("A comma-separated list of tags."),
                  through=None, **kwargs):
         through = through or TaggedItem
+        kwargs['manager'] = _TaggableManager
         super(TaggableManager, self).__init__(
             verbose_name=verbose_name, help_text=help_text,
             through=through, **kwargs)
