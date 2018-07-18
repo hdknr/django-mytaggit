@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify as default_slugify
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils.functional import cached_property
 from taggit.models import TagBase, GenericTaggedItemBase
 from taggit.managers import TaggableManager as BaseTaggableManager
@@ -34,7 +34,8 @@ class Tag(TagBase, methods.Tag):
 class TaggedItem(GenericTaggedItemBase):
 
     tag = models.ForeignKey(
-        Tag, related_name="%(app_label)s_%(class)s_items")
+        Tag, related_name="%(app_label)s_%(class)s_items", 
+        on_delete=models.CASCADE)
 
 
 class TaggableManager(BaseTaggableManager):
