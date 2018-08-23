@@ -1,9 +1,8 @@
-# coding: utf-8
-from .utils import Kakasi
+from .utils import to_roman
 
 
 class Tag(object):
 
     @classmethod
     def to_roman(cls, text):
-        return Kakasi().convert(text)
+        return to_roman(text)

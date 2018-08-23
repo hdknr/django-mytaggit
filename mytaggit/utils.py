@@ -1,4 +1,3 @@
-# coding: utf-8
 from pykakasi import kakasi
 import re
 __all__ = ['Kakasi']
@@ -27,3 +26,7 @@ class Kakasi:
             cls._instance = super().__new__(cls)
 
         return cls._instance
+
+
+def to_roman(text):
+    return Kakasi().convert(text)
