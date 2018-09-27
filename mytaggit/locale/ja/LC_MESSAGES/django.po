@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-03 18:17+0900\n"
+"POT-Creation-Date: 2018-09-27 17:39+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,23 +18,35 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
+#: admin/forms.py:8
+msgid "Tag Name"
+msgstr "タグ名"
+
+#: admin/forms.py:10 models.py:47
+msgid "Tag Value"
+msgstr "値"
+
+#: admin/forms.py:11
+msgid "Tag Value Help"
+msgstr "オプションで値を指定可能です"
+
 #: filters.py:9
 msgid "Keyword"
 msgstr "キーワード"
 
-#: filters.py:11
+#: filters.py:13
 msgid "Is Active"
 msgstr "有効"
 
-#: models.py:15
+#: models.py:22
 msgid "Tag"
 msgstr "タグ"
 
-#: models.py:16 models.py:42
+#: models.py:23 models.py:89
 msgid "Tags"
 msgstr "タグ"
 
-#: models.py:43
+#: models.py:90
 msgid "A comma-separated list of tags."
 msgstr "カンマで区切られたタグ"
 
