@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-27 17:39+0900\n"
+"POT-Creation-Date: 2018-10-09 12:36+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,11 +42,23 @@ msgstr "有効"
 msgid "Tag"
 msgstr "タグ"
 
-#: models.py:23 models.py:89
+#: models.py:23 models.py:95
 msgid "Tags"
 msgstr "タグ"
 
-#: models.py:90
+#: models.py:48
+msgid "Optional Value for Tag"
+msgstr "タグの値(オプション)"
+
+#: models.py:54
+msgid "Tagged Item"
+msgstr "タグアイテム"
+
+#: models.py:55
+msgid "Tagged Items"
+msgstr "タグアイテム"
+
+#: models.py:96
 msgid "A comma-separated list of tags."
 msgstr "カンマで区切られたタグ"
 
@@ -58,7 +70,7 @@ msgstr ""
 #: serializers.py:146
 msgid ""
 "Invalid json list. A tag list submitted in string form must be valid json."
-msgstr ""
+msgstr "JSONのリストが不正な形式です。"
 
 #: serializers.py:147
 msgid "All list items must be of string type."

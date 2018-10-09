@@ -44,9 +44,15 @@ class TaggedItem(GenericTaggedItemBase):
         Tag, related_name="%(app_label)s_%(class)s_items", 
         on_delete=models.CASCADE)
     value = models.TextField(
-        _('Tag Value'), null=True, blank=True, default=None)
+        _('Tag Value'), 
+        help_text=_('Optional Value for Tag'),
+        null=True, blank=True, default=None)
     users = models.ManyToManyField(
         User, blank=True)
+
+    class Meta:
+        verbose_name = _('Tagged Item')
+        verbose_name_plural = _('Tagged Items')
 
 
 class _TaggableManager(_BaseTaggableManager):
