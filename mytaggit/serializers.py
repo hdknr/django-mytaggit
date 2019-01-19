@@ -3,10 +3,23 @@ import json
 import six
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
+from django.urls import reverse
 from rest_framework import serializers
 from . import models
 import json
 
+
+def drf_endpoint(instance):
+    ''' DRF endpoint '''
+    try:
+        if hasattr(instance, 'get_endpoint_url'):
+            return hasattr(instance, 'get_endpoint_url')
+        name = f"{instance._meta.model_name}-detail"
+        return reverse(name, kwargs={'pk': instance.pk})
+    except:
+        pass
+    return ''
+    
 
 class TagSerializer(serializers.ModelSerializer):
     url = serializers.SerializerMethodField()
@@ -78,10 +91,11 @@ class TaggedItemSerializer(serializers.ModelSerializer):
     name = serializers.CharField(source='tag.name')
     slug = serializers.CharField(source='tag.slug')
     url = serializers.SerializerMethodField()
+    endpoint = serializers.SerializerMethodField() 
 
     class Meta:
         model = models.TaggedItem
-        fields = ['id', 'content_type', 'object_id', 'url', 'name', 'slug']
+        fields = ['id', 'content_type', 'object_id', 'url', 'endpoint', 'name', 'slug']
 
     def get_url(self, obj):
         try:
@@ -90,6 +104,15 @@ class TaggedItemSerializer(serializers.ModelSerializer):
             return request and request.build_absolute_uri(url) or url
         except:
             return ''
+
+    def get_endpoint(self, obj):
+        try:
+            url = drf_endpoint(obj.content_object)
+            request = self.context.get('request', None)
+            return request and request.build_absolute_uri(url) or url
+        except:
+            pass
+        return ''
 
     def is_valid(self, raise_exception=False):
         self.patch_tag()
