@@ -109,7 +109,7 @@ class TaggedItemSerializer(serializers.ModelSerializer):
         try:
             url = drf_endpoint(obj.content_object)
             request = self.context.get('request', None)
-            return request and request.build_absolute_uri(url) or url
+            return (request and url) and request.build_absolute_uri(url) or url or None
         except:
             pass
         return ''
