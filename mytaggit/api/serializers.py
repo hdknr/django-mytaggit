@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
 from rest_framework import serializers
-from . import models
+from .. import models
 import json
 
 

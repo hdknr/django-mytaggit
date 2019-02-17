@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import Q
 import rest_framework_filters as filters
-from . import models
+from .. import models
 
 
 class TagFilter(filters.FilterSet):
