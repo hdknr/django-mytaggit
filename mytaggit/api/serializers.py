@@ -92,10 +92,13 @@ class TaggedItemSerializer(serializers.ModelSerializer):
     slug = serializers.CharField(source='tag.slug')
     url = serializers.SerializerMethodField()
     endpoint = serializers.SerializerMethodField() 
+    tag_endpoint = serializers.SerializerMethodField() 
 
     class Meta:
         model = models.TaggedItem
-        fields = ['id', 'content_type', 'object_id', 'url', 'endpoint', 'name', 'slug']
+        fields = [
+            'id', 'content_type', 'object_id', 'url', 'endpoint', 'name', 'slug', 
+            'tag_endpoint']
 
     def get_url(self, obj):
         try:
@@ -108,6 +111,15 @@ class TaggedItemSerializer(serializers.ModelSerializer):
     def get_endpoint(self, obj):
         try:
             url = drf_endpoint(obj.content_object)
+            request = self.context.get('request', None)
+            return (request and url) and request.build_absolute_uri(url) or url or None
+        except:
+            pass
+        return ''
+
+    def get_tag_endpoint(self, obj):
+        try:
+            url = drf_endpoint(obj.tag)
             request = self.context.get('request', None)
             return (request and url) and request.build_absolute_uri(url) or url or None
         except:
