@@ -6,15 +6,15 @@ from .. import models
 
 class TagFilter(filters.FilterSet):
     keyword = filters.CharFilter(
-        label=_('Keyword'), name='keyword', method='filter_keyword')
+        label=_('Keyword'),  method='filter_keyword')
     name = filters.CharFilter(lookup_expr='icontains')
 
     is_active = filters.BooleanFilter(
-        label=_('Is Active'), name='is_active', method='filter_is_actvie')
+        label=_('Is Active'), method='filter_is_actvie')
 
     class Meta:
         model = models.Tag
-        exclude = []
+        exclude = ['']
 
     def filter_is_actvie(self, queryset, name, value):
         ''' True(value=1), False(value=0)'''
