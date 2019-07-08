@@ -2,3 +2,4 @@ django-taggit
 djangorestframework
 djangorestframework-filters
 django-filter
+pykakasi
