@@ -43,10 +43,17 @@ class TaggedItem(GenericTaggedItemBase):
     tag = models.ForeignKey(
         Tag, related_name="%(app_label)s_%(class)s_items", 
         on_delete=models.CASCADE)
+
     value = models.TextField(
         _('Tag Value'), 
         help_text=_('Optional Value for Tag'),
         null=True, blank=True, default=None)
+
+    comment = models.TextField(
+        _('Tag Comment'), 
+        help_text=_('Optional Comment for Tag'),
+        null=True, blank=True, default=None)
+
     users = models.ManyToManyField(
         User, blank=True)
 
