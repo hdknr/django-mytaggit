@@ -4,6 +4,9 @@ from django.urls import reverse
 from django.utils.html import mark_safe
 from ..models import TaggedItem
 from . import forms
+from markdownx.widgets import AdminMarkdownxWidget
+from markdownx.models import MarkdownxField
+
 
 
 class TaggedItemInline(admin.TabularInline):
@@ -11,6 +14,9 @@ class TaggedItemInline(admin.TabularInline):
     model = TaggedItem
     raw_id_fields = ['users', 'content_type']
     extra = 1
+    formfield_overrides = {
+        MarkdownxField: {'widget': AdminMarkdownxWidget}
+    }
 
     def item_link(self, obj):
         url = reverse(f"admin:{obj.content_type.app_label}_{obj.content_type.model}_change", args=[obj.object_id])
@@ -24,6 +30,9 @@ class GenericTaggedItemInline(GenericTabularInline):
     extra = 1
     form = forms.TaggedItemForm
     readonly_fields = ['tag_link']
+    formfield_overrides = {
+        MarkdownxField: {'widget': AdminMarkdownxWidget}
+    }
 
     def tag_link(self, obj):
         if not obj.tag:

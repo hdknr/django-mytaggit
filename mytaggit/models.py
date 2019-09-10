@@ -13,6 +13,7 @@ from taggit.managers import (
     TaggableManager as BaseTaggableManager,
 )
 from taggit.utils import require_instance_manager
+from markdownx.models import MarkdownxField
 from . import methods
 
 
@@ -49,7 +50,7 @@ class TaggedItem(GenericTaggedItemBase):
         help_text=_('Optional Value for Tag'),
         null=True, blank=True, default=None)
 
-    comment = models.TextField(
+    comment = MarkdownxField(
         _('Tag Comment'), 
         help_text=_('Optional Comment for Tag'),
         null=True, blank=True, default=None)
@@ -96,6 +97,7 @@ class _TaggableManager(_BaseTaggableManager):
             instance=self.instance, reverse=False,
             model=self.through.tag_model(), pk_set=new_ids, using=db,
         )
+
 
 class TaggableManager(BaseTaggableManager):
 

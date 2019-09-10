@@ -3,3 +3,4 @@ djangorestframework
 djangorestframework-filters
 django-filter
 pykakasi
+django-markdownx
