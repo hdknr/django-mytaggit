@@ -13,6 +13,12 @@ class TaggedItemInline(admin.TabularInline):
     readonly_fields = ['item_link']
     model = TaggedItem
     raw_id_fields = ['users', 'content_type']
+    fields = [
+        'id', 'item_link',
+        'tag',
+        'content_type', 'object_id', 
+        'value', 'comment',
+    ]
     extra = 1
     formfield_overrides = {
         MarkdownxField: {'widget': AdminMarkdownxWidget}
